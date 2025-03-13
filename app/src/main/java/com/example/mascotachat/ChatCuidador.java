@@ -1,6 +1,5 @@
 package com.example.mascotachat;
 
-
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -13,55 +12,55 @@ import androidx.appcompat.app.AppCompatActivity;
 
 public class ChatCuidador extends AppCompatActivity {
 
-    private TextView messageHistory;
-    private EditText responseInput;
-    private Button sendBackButton;
+    private TextView historialMensajes;
+    private EditText entradaRespuesta;
+    private Button botonEnviarRespuesta;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_care);
 
-        messageHistory = findViewById(R.id.messageHistory);
-        responseInput = findViewById(R.id.responseInput);
-        sendBackButton = findViewById(R.id.sendBackButton);
+        historialMensajes = findViewById(R.id.messageHistory);
+        entradaRespuesta = findViewById(R.id.responseInput);
+        botonEnviarRespuesta = findViewById(R.id.sendBackButton);
 
         // Obtener el historial de mensajes desde SharedPreferences
-        SharedPreferences sharedPreferences = getSharedPreferences("chatHistory", MODE_PRIVATE);
-        String chatHistory = sharedPreferences.getString("history", "");  // Cargar el historial guardado
-        messageHistory.setText(chatHistory);  // Mostrar el historial en el TextView
+        SharedPreferences preferenciasCompartidas = getSharedPreferences("chatHistory", MODE_PRIVATE);
+        String historial = preferenciasCompartidas.getString("history", "");  // Cargar el historial guardado
+        historialMensajes.setText(historial);  // Mostrar el historial en el TextView
 
         // Recibir el mensaje del propietario solo la primera vez
         Intent intent = getIntent();
-        String messageFromOwner = intent.getStringExtra("message");
+        String mensajeDelPropietario = intent.getStringExtra("message");
 
         // Verificar si el mensaje de propietario ya está en el historial, si no, agregarlo
-        if (messageFromOwner != null && !chatHistory.contains("Propietario: " + messageFromOwner)) {
-            messageHistory.append("\nPropietario: " + messageFromOwner);  // Mostrar el mensaje del propietario
+        if (mensajeDelPropietario != null && !historial.contains("Propietario: " + mensajeDelPropietario)) {
+            historialMensajes.append("\nPropietario: " + mensajeDelPropietario);  // Mostrar el mensaje del propietario
         }
 
-        sendBackButton.setOnClickListener(v -> {
+        botonEnviarRespuesta.setOnClickListener(v -> {
             // Obtener la respuesta del cuidador
-            String responseMessage = responseInput.getText().toString();
-            if (!responseMessage.isEmpty()) {
+            String mensajeRespuesta = entradaRespuesta.getText().toString();
+            if (!mensajeRespuesta.isEmpty()) {
                 // Modificar el historial antes de actualizarlo
-                String updatedHistory = chatHistory + "\nCuidador: " + responseMessage;
+                String historialActualizado = historial + "\nCuidador: " + mensajeRespuesta;
 
                 // Actualizar el historial en el TextView
-                messageHistory.setText(updatedHistory);
+                historialMensajes.setText(historialActualizado);
 
                 // Guardar el historial actualizado en SharedPreferences
-                SharedPreferences.Editor editor = sharedPreferences.edit();
-                editor.putString("history", updatedHistory);  // Guardar el historial actualizado
+                SharedPreferences.Editor editor = preferenciasCompartidas.edit();
+                editor.putString("history", historialActualizado);  // Guardar el historial actualizado
                 editor.apply();
 
                 // Enviar la respuesta de vuelta al propietario
-                Intent intentBack = new Intent(ChatCuidador.this, ChatUsuario.class);
-                intentBack.putExtra("responseMessage", responseMessage);  // Enviar la respuesta al propietario
-                startActivity(intentBack);
+                Intent intentRegreso = new Intent(ChatCuidador.this, ChatUsuario.class);
+                intentRegreso.putExtra("responseMessage", mensajeRespuesta);  // Enviar la respuesta al propietario
+                startActivity(intentRegreso);
             } else {
                 Toast.makeText(ChatCuidador.this, "Por favor, escribe una respuesta.", Toast.LENGTH_SHORT).show();
             }
-   });
-}
+        });
+    }
 }

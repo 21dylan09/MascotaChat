@@ -12,47 +12,47 @@ import androidx.appcompat.app.AppCompatActivity;
 
 public class ChatUsuario extends AppCompatActivity {
 
-    private EditText messageInput;
-    private TextView messageHistory;
-    private Button sendButton;
+    private EditText entradaMensaje;
+    private TextView historialMensajes;
+    private Button botonEnviar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        messageInput = findViewById(R.id.messageInput);
-        messageHistory = findViewById(R.id.messageHistory);
-        sendButton = findViewById(R.id.sendButton);
+        entradaMensaje = findViewById(R.id.messageInput);
+        historialMensajes = findViewById(R.id.messageHistory);
+        botonEnviar = findViewById(R.id.sendButton);
 
         // Obtener el historial de mensajes desde SharedPreferences
-        SharedPreferences sharedPreferences = getSharedPreferences("chatHistory", MODE_PRIVATE);
-        String chatHistory = sharedPreferences.getString("history", "");  // Cargar el historial guardado
-        messageHistory.setText(chatHistory);  // Mostrar el historial en el TextView
+        SharedPreferences preferenciasCompartidas = getSharedPreferences("chatHistory", MODE_PRIVATE);
+        String historial = preferenciasCompartidas.getString("history", "");  // Cargar el historial guardado
+        historialMensajes.setText(historial);  // Mostrar el historial en el TextView
 
-        sendButton.setOnClickListener(v -> {
-            String message = messageInput.getText().toString();
+        botonEnviar.setOnClickListener(v -> {
+            String mensaje = entradaMensaje.getText().toString();
 
             // Verificar si el mensaje no está vacío
-            if (!message.isEmpty()) {
+            if (!mensaje.isEmpty()) {
                 // Modificar el historial antes de actualizarlo
-                String updatedHistory = chatHistory + "\nPropietario: " + message;
+                String historialActualizado = historial + "\nPropietario: " + mensaje;
 
                 // Actualizar el historial en el TextView
-                messageHistory.setText(updatedHistory);
+                historialMensajes.setText(historialActualizado);
 
                 // Guardar el historial actualizado en SharedPreferences
-                SharedPreferences.Editor editor = sharedPreferences.edit();
-                editor.putString("history", updatedHistory);  // Guardar el historial actualizado
+                SharedPreferences.Editor editor = preferenciasCompartidas.edit();
+                editor.putString("history", historialActualizado);  // Guardar el historial actualizado
                 editor.apply();
 
                 // Enviar el mensaje al cuidador
-                Intent intentToCaregiver = new Intent(ChatUsuario.this, ChatCuidador.class);
-                intentToCaregiver.putExtra("message", message);  // Enviar el mensaje al cuidador
-                startActivity(intentToCaregiver);
+                Intent intentAlCuidador = new Intent(ChatUsuario.this, ChatCuidador.class);
+                intentAlCuidador.putExtra("message", mensaje);  // Enviar el mensaje al cuidador
+                startActivity(intentAlCuidador);
             } else {
                 Toast.makeText(ChatUsuario.this, "Por favor, escribe un mensaje.", Toast.LENGTH_SHORT).show();
             }
-   });
-}
+        });
+    }
 }

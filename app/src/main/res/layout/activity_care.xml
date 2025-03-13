@@ -1,27 +1,54 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:padding="16dp">
+    android:padding="16dp"
+    android:background="#f1f1f1"
+    android:gravity="center_vertical">
 
+    <!-- Historial de Mensajes -->
     <TextView
         android:id="@+id/messageHistory"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Historial de mensajes"
-        android:textSize="16sp"/>
+        android:textSize="18sp"
+        android:textColor="#333333"
+        android:paddingBottom="16dp"
+        android:textStyle="bold"/>
 
-    <EditText
-        android:id="@+id/responseInput"
+    <!-- Input de respuesta con un diseño más atractivo -->
+    <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Escribe tu respuesta"
-        android:inputType="text"/>
+        android:layout_marginBottom="16dp"
+        app:cardCornerRadius="12dp"
+        app:cardElevation="4dp">
 
+        <EditText
+            android:id="@+id/responseInput"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Escribe tu respuesta"
+            android:textSize="16sp"
+            android:padding="16dp"
+            android:inputType="text"
+            android:background="@android:color/white"
+            android:textColor="#333333"
+            android:textColorHint="#888888"/>
+    </androidx.cardview.widget.CardView>
+
+    <!-- Botón de enviar respuesta con fondo personalizado -->
     <Button
         android:id="@+id/sendBackButton"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Responder"/>
+        android:text="Responder"
+        android:textColor="#ffffff"
+        android:background="@drawable/button_background"
+        android:padding="12dp"
+        android:textSize="16sp"
+        android:layout_marginTop="16dp"/>
 </LinearLayout>
